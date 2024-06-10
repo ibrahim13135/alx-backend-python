@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Defines an asynchronous coroutine"""
 import asyncio
 import random
 
