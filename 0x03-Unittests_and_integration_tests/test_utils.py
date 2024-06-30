@@ -1,6 +1,8 @@
 import unittest
 
 
+from typing import Dict, Tuple, Union
+
 # run the test method with different sets of parameters.
 from parameterized import parameterized
 
@@ -18,7 +20,12 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(self, nested_map, path, expected):
+    def test_access_nested_map(self,
+                               nested_map: Dict,
+                               path: Tuple[str],
+                               expected: Union[Dict,
+                                               int],
+                               ) -> None:
         """
         Test that access_nested_map returns the expected result.
         """
