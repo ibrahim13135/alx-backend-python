@@ -21,7 +21,12 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(self, nested_map: Dict, path: Tuple[str], expected: Union[Dict, int],) -> None:
+    def test_access_nested_map(self,
+                               nested_map: Dict,
+                               path: Tuple[str],
+                               expected: Union[Dict,
+                                               int],
+                               ) -> None:
         """
         Test that access_nested_map returns the expected result.
         """
@@ -43,3 +48,18 @@ class TestAccessNestedMap(unittest.TestCase):
 #     ({"a": {"b": 2}}, ("a",), {"b": 2}),
 #     ({"a": {"b": 2}}, ("a", "b"), 2)
 # ])
+
+    @parameterized.expand([
+        ({}, ("a",), KeyError),
+        ({"a": 1}, ("a", "b"), KeyError),
+    ])
+# nested_map={}, path=("a",)
+# nested_map={"a": 1}, path=("a", "b")
+    def test_access_nested_map_exception(
+        self,
+        nested_map: Dict,
+        path: Tuple[str],
+        exception: Exception,
+    ) -> None:
+        with self.assertRaises(KeyError) as error:
+            access_nested_map(nested_map, path)
