@@ -63,3 +63,7 @@ class TestAccessNestedMap(unittest.TestCase):
     ) -> None:
         with self.assertRaises(KeyError) as error:
             access_nested_map(nested_map, path)
+
+        # The KeyError message should be the string representation of
+        #  the last key in the path tuple.
+        self.assertEquel(str(error.exception), str(path[-1]))
