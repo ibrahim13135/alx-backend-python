@@ -91,11 +91,11 @@ class TestMemoize(unittest.TestCase):
                 return self.a_method()
 
         # Create an instance of TestClass
-        test_obj = TestClass()
 
         # Patch a_method to track its calls
         with patch.object(TestClass, 'a_method', return_value=42) as moc_mt:
             # Call a_property twice
+            test_obj = TestClass()
             result1 = test_obj.a_property
             result2 = test_obj.a_property
 
