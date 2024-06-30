@@ -3,10 +3,10 @@ import unittest
 
 from typing import Dict, Tuple, Union
 
-# run the test method with different sets of parameters.
+
 from parameterized import parameterized
 
-# Access nested map with key path.
+
 from utils import access_nested_map
 
 
