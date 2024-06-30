@@ -10,10 +10,11 @@ from parameterized import parameterized
 # Access nested map with key path.
 from utils import access_nested_map
 
-#
+#Get JSON from remote URL.
 from utils import get_json
 
-#
+#patch():Allows patching module and class-level attributes within the scope of a test.
+#Mock: Basic mock object where you define behaviors and assertions.
 from unittest.mock import patch, Mock
 
 
@@ -123,3 +124,41 @@ class TestGetJson(unittest.TestCase):
 
             # Assert that the output of get_json is equal to the test_payload
             self.assertEqual(result, test_payload)
+
+
+
+#task 4
+# Steps:
+    # Define the TestMemoize Class: Create a test class inheriting from unittest.TestCase.
+    # Define TestClass: Inside the test method, define a class TestClass with:
+    # a_method that returns a value.
+    # a_property decorated with @memoize, which calls a_method.
+    # Mock a_method: Use unittest.mock.patch to mock a_method.
+    # Test a_property: Call a_property twice and verify:
+    # The correct result is returned.
+    # a_method is only called once.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class TestMemoize(unittest.TestCase):
+
+    def test_memoize():
+        class TestClass:
+
+    def a_method(self):
+        return 42
+
+    @memoize
+    def a_property(self):
+        return self.a_method()
