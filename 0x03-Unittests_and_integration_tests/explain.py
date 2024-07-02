@@ -166,3 +166,63 @@ class TestMemoize(unittest.TestCase):
 
             # Assert that a_method was only called once
             mock_method.assert_called_once()
+
+
+
+# TASK 5
+# Step-by-Step Guide
+# Familiarize with GithubOrgClient Class:
+
+# The GithubOrgClient class likely has a method org which retrieves information
+#  about a GitHub organization.
+#  This method might internally call a get_json function to fetch data
+# from a URL.
+# Setup test_client.py:
+
+# Create a new file named test_client.py.
+# Import Necessary Modules:
+
+# Import unittest, patch, parameterized, and GithubOrgClient.
+# Define TestGithubOrgClient Class:
+
+# This class will inherit from unittest.TestCase.
+# Implement test_org Method:
+
+# Use @patch to mock get_json so no actual HTTP requests are made.
+# Use @parameterized.expand to test multiple organization names.
+# Test that GithubOrgClient.org returns the correct value and that
+# get_json is called with the expected arguments.
+
+
+
+from client import GithubOrgClient
+
+class TestGithubOrgClient(unittest.TestCase):
+    """
+    TestGithubOrgClient class to test GithubOrgClient.org method.
+    """
+
+    @parameterized.expand([
+        ("google",),
+        ("abc",),
+    ])
+    @patch('client.get_json')
+    def test_org(self, org_name, mock_get_json):
+        """
+        Test that GithubOrgClient.org returns the correct value.
+        """
+        # Set up the mock to return a specific value
+        mock_get_json.return_value = {"login": org_name}
+
+        # Create an instance of GithubOrgClient
+        client = GithubOrgClient(org_name)
+
+        # Call the org method
+        result = client.org()
+
+        # Assert that get_json was called once with the expected URL
+        expected_url = f"https://api.github.com/orgs/{org_name}"
+        mock_get_json.assert_called_once_with(expected_url)
+
+        # Assert that the result is what we expect
+        self.assertEqual(result, {"login": org_name})
