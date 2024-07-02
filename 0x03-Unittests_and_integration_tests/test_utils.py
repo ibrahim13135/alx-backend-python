@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from client import GithubOrgClient
 import unittest
 from typing import Dict, Tuple, Union
 from parameterized import parameterized
@@ -82,6 +83,7 @@ class TestGetJson(unittest.TestCase):
 
 class TestMemoize(unittest.TestCase):
     """Tests the `memoize` function."""
+
     def test_memoize(self) -> None:
         """Tests `memoize`'s output."""
         class TestClass:
@@ -95,8 +97,50 @@ class TestMemoize(unittest.TestCase):
                 TestClass,
                 "a_method",
                 return_value=lambda: 42,
-                ) as memo_fxn:
+        ) as memo_fxn:
             test_class = TestClass()
             self.assertEqual(test_class.a_property(), 42)
             self.assertEqual(test_class.a_property(), 42)
             memo_fxn.assert_called_once()
+
+
+# TASK 5
+# Step-by-Step Guide
+# Familiarize with GithubOrgClient Class:
+
+# The GithubOrgClient class likely has a method org which retrieves information
+#  about a GitHub organization.
+#  This method might internally call a get_json function to fetch data
+# from a URL.
+# Setup test_client.py:
+
+# Create a new file named test_client.py.
+# Import Necessary Modules:
+
+# Import unittest, patch, parameterized, and GithubOrgClient.
+# Define TestGithubOrgClient Class:
+
+# This class will inherit from unittest.TestCase.
+# Implement test_org Method:
+
+# Use @patch to mock get_json so no actual HTTP requests are made.
+# Use @parameterized.expand to test multiple organization names.
+# Test that GithubOrgClient.org returns the correct value and that
+# get_json is called with the expected arguments.
+
+
+class TestGithubOrgClient(unittest.TestCase):
+
+    @parameterized.expand([
+        ('google',),
+        ('abc')
+    ])
+    @patch('client.get_json')
+    def test_org(self, org_name, mock_get_json):
+        mock_get_json.return_value = {"login": org_name}
+        client = GithubOrgClient(org_name)
+
+        res1 = client.org()
+        expected_url = f"https://api.github.com/orgs/{org_name}"
+        mock_get_json.assert_called_once_with(expected_url)
+        self.assertEqual(res1, {"login": org_name})
